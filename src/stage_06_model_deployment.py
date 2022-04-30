@@ -1,0 +1,2 @@
+class ModelDeployment:
+    pass
