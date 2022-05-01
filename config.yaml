@@ -5,6 +5,9 @@ data_set:
   buffer_size: 10000
   batch_size: 64
 
+
+#Assignement Add validation configuration detail.
+
 preprocessing:
   vocab_size: 1000
 
