@@ -1,3 +1,7 @@
 Flask
--e .
 gunicorn
+pyyaml
+tensorflow
+tensorflow-datasets
+matplotlib
+-e .
