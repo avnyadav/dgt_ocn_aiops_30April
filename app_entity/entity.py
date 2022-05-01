@@ -19,6 +19,10 @@ ExperimentEntity = namedtuple("ExperimentEntity", [
 
 class DataIngestionEntity:
     def __init__(self, experiment_id, train, test, dataset_config: DatasetConfig):
+        """
+
+        experiment_id, train, test, dataset_config: DatasetConfig
+        """
         self.experiment_id = experiment_id,
         self.train = train
         self.test = test
@@ -96,6 +100,12 @@ class TrainingPipelineEntity:
                  data_preprocessing: DataValidationEntity = None,
                  model_trainer: TrainedModelEntity = None,
                  ):
+        """
+
+        data_ingestion: DataIngestionEntity = None,
+        data_preprocessing: DataValidationEntity = None,
+        model_trainer: TrainedModelEntity = None,
+        """
         self.model_trainer = model_trainer
         self.status = None
         self.message = ""

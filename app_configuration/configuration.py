@@ -71,6 +71,65 @@ class AppConfiguration:
         except Exception as e:
             raise AppException(e, sys) from e
 
+    @log_function_signature
+    def get_preprocessing_configuration(self) -> PreprocessingConfig:
+        try:
+            preprocessing_config = self.config_info[PREPROCESSING_KEY]
+            logging.info(f"Preprocessing configuration :\n{preprocessing_config}\n read successfully.")
+            response = PreprocessingConfig(vocal_size=preprocessing_config[VOCAB_SIZE_KEY])
+            logging.info(f"Preprocessing config: {response}")
+            return response
+        except Exception as e:
+            raise AppException(e, sys) from e
 
-if __name__=="__main__":
-    AppConfiguration().get_dataset_configuration()
+    @log_function_signature
+    def get_model_training_config(self) -> ModelTrainingConfig:
+        try:
+            training_pipeline_config = self.get_training_pipeline_config()
+            artifact_dir = training_pipeline_config.artifact_dir
+            training_config = self.config_info[TRAINING_CONFIG_KEY]
+            model_root_dir = os.path.join(artifact_dir, training_config[TRAINING_MODEL_ROOT_DIR_KEY])
+            model_save_dir = os.path.join(model_root_dir, training_config[TRAINING_MODEL_SAVE_DIR_KEY])
+            model_checkpoint_dir = os.path.join(model_root_dir, training_config[TRAINING_MODEL_CHECKPOINT_DIR_KEY])
+            base_accuracy = training_config[TRAINING_MODEL_BASE_ACCURACY_KEY]
+            tensorboard_log_dir = os.path.join(model_root_dir,training_config[TRAINING_MODEL_TENSORBOARD_LOG_DIR_KEY])
+            epoch = training_config[TRAINING_MODEL_EPOCH_KEY]
+            validation_step = training_config[TRAINING_MODEL_VALIDATION_STEP_KEY]
+
+            # creating_directory
+
+            dir_list = [model_save_dir, model_checkpoint_dir, tensorboard_log_dir, model_checkpoint_dir]
+            for dir_name in dir_list:
+                os.makedirs(dir_name, exist_ok=True)
+
+            response = ModelTrainingConfig(model_save_dir=model_save_dir,
+                                           model_root_dir=model_root_dir,
+                                           model_checkpoint_dir=model_checkpoint_dir,
+                                           base_accuracy=base_accuracy,
+                                           tensorboard_log_dir=tensorboard_log_dir,
+                                           epoch=epoch,
+                                           validation_step=validation_step
+                                           )
+            logging.info(f"Model training config: {response}")
+            return response
+        except Exception as e:
+            raise AppException(e, sys)
+
+    @log_function_signature
+    def get_training_pipeline_config(self, experiment_id) -> TrainingPipelineConfig:
+        try:
+            training_pipeline_config = self.config_info[TRAINING_PIPELINE_KEY]
+            logging.info(f"Preprocessing configuration :\n{training_pipeline_config}\n read successfully.")
+            artifact_dir = os.path.join(ROOT_DIR, training_pipeline_config[ARTIFACT_DIR_KEY], experiment_id)
+            logging.info(f"Training pipeline artifact dir: {artifact_dir}")
+            response = TrainingPipelineConfig(artifact_dir=artifact_dir)
+            logging.info(f"Training pipeline config: {response}")
+            return response
+        except Exception as e:
+            raise AppException(e, sys) from e
+
+    def __repr__(self) -> str:
+        return f"AppConfiguration()"
+
+    def __str__(self) -> str:
+        return f"AppConfiguration()"

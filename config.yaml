@@ -25,3 +25,4 @@ training_pipeline_config:
   artifact_dir: artifacts
 
 
+#model deployment configuration
