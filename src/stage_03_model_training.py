@@ -17,7 +17,7 @@ class ModelTrainer:
         try:
 
             self.data_ingestion = data_ingestion
-            model_training_config = app_config.get_model_training_config()
+            model_training_config = app_config.get_model_training_config(experiment_id=experiment.experiment_id)
             self.trained_model = TrainedModelEntity(experiment_id=experiment.experiment_id,
                                                     model_training_config=model_training_config
                                                     )

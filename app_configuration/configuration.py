@@ -83,9 +83,9 @@ class AppConfiguration:
             raise AppException(e, sys) from e
 
     @log_function_signature
-    def get_model_training_config(self) -> ModelTrainingConfig:
+    def get_model_training_config(self,experiment_id) -> ModelTrainingConfig:
         try:
-            training_pipeline_config = self.get_training_pipeline_config()
+            training_pipeline_config = self.get_training_pipeline_config(experiment_id=experiment_id)
             artifact_dir = training_pipeline_config.artifact_dir
             training_config = self.config_info[TRAINING_CONFIG_KEY]
             model_root_dir = os.path.join(artifact_dir, training_config[TRAINING_MODEL_ROOT_DIR_KEY])
